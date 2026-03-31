@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PorousITS.id – Paving Anti-Banjir</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+    :root {
+      --navy: #0a1628;
+      --blue: #1a4480;
+      --sky: #2e88d9;
+      --cyan: #3bc9db;
+      --water: #74d7f0;
+      --white: #f4f8fb;
+      --text: #c8dff0;
+      --accent: #f0a500;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .rain-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .rain-drop {
+      position: absolute;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(116, 215, 240, 0.3));
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(10, 22, 40, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(58, 200, 219, 0.15);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--cyan);
+    }
+
+    .logo small {
+      display: block;
+      font-size: 0.55rem;
+      color: var(--text);
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    .nav-cta {
+      background: var(--cyan);
+      color: var(--navy) !important;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-weight: 600 !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--water) !important;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 48px 80px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(58, 200, 219, 0.12);
+      border: 1px solid rgba(58, 200, 219, 0.3);
+      color: var(--cyan);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      width: fit-content;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(1.3)
+      }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -2px;
+      max-width: 780px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--cyan);
+    }
+
+    .hero-sub {
+      margin-top: 24px;
+      font-size: 1.1rem;
+      color: var(--text);
+      max-width: 520px;
+      line-height: 1.7;
+      font-weight: 300;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-actions {
+      margin-top: 40px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: var(--navy);
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--water);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(58, 200, 219, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .hero-stats {
+      margin-top: 72px;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+
+    .stat {
+      border-left: 2px solid var(--cyan);
+      padding-left: 16px;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .stat-num span {
+      color: var(--cyan);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text);
+      margin-top: 4px;
+    }
+
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 48px;
+    }
+
+    .section-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+      max-width: 520px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: rgba(26, 68, 128, 0.25);
+      border: 1px solid rgba(58, 200, 219, 0.12);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(58, 200, 219, 0.35);
+      transform: translateY(-4px);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(58, 200, 219, 0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .calculator-section {
+      background: rgba(14, 32, 64, 0.6);
+      border: 1px solid rgba(58, 200, 219, 0.15);
+      border-radius: 24px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .calc-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      background: rgba(10, 22, 40, 0.8);
+      border: 1px solid rgba(58, 200, 219, 0.2);
+      color: var(--white);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(58, 200, 219, 0.1);
+    }
+
+    .form-group select option {
+      background: var(--navy);
+    }
+
+    .calc-result {
+      background: rgba(58, 200, 219, 0.08);
+      border: 1px solid rgba(58, 200, 219, 0.2);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .calc-result-label {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .calc-result-amount {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+
+    .calc-result-sub {
+      font-size: 0.8rem;
+      color: var(--text);
+      margin-top: 8px;
+    }
+
+    .calc-breakdown {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text);
+      padding: 8px 12px;
+      background: rgba(10, 22, 40, 0.4);
+      border-radius: 6px;
+    }
+
+    .breakdown-row strong {
+      color: var(--white);
+    }
+
+    .map-preview {
+      background: rgba(14, 32, 64, 0.4);
+      border: 1px solid rgba(58, 200, 219, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 35% 45%, rgba(58, 200, 219, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(240, 165, 0, 0.1) 0%, transparent 30%);
+    }
+
+    .map-pins {
+      position: absolute;
+      inset: 0;
+    }
+
+    .map-pin {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .map-pin:hover {
+      transform: scale(1.2) translateY(-3px);
+    }
+
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      animation: pinPulse 2s infinite;
+    }
+
+    .pin-red .pin-dot {
+      background: #f44;
+    }
+
+    .pin-label {
+      font-size: 0.65rem;
+      background: rgba(10, 22, 40, 0.85);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 4px;
+      white-space: nowrap;
+      color: var(--white);
+    }
+
+    @keyframes pinPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 100, 100, 0.4)
+      }
+
+      50% {
+        box-shadow: 0 0 0 8px rgba(255, 100, 100, 0)
+      }
+    }
+
+    .map-overlay {
+      z-index: 1;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .map-overlay p {
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background: rgba(26, 68, 128, 0.2);
+      border: 1px solid rgba(58, 200, 219, 0.12);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(58, 200, 219, 0.4);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .product-thumb {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-thumb-1 {
+      background: linear-gradient(135deg, #1a4480, #0a1628);
+    }
+
+    .product-thumb-2 {
+      background: linear-gradient(135deg, #0d3b60, #1a4480);
+    }
+
+    .product-thumb-3 {
+      background: linear-gradient(135deg, #0a2a4a, #0d3b60);
+    }
+
+    .product-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 80%, rgba(58, 200, 219, 0.15), transparent 60%);
+    }
+
+    .product-info {
+      padding: 24px;
+    }
+
+    .product-badge {
+      display: inline-block;
+      background: rgba(58, 200, 219, 0.15);
+      color: var(--cyan);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .product-info h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .product-info p {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .product-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .product-price span {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .cta-section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 48px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .cta-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(58, 200, 219, 0.1), transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section p {
+      color: var(--text);
+      font-size: 1.05rem;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(58, 200, 219, 0.1);
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 0.8rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--cyan);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--navy);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--sky);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 100px 24px 60px;
+      }
+
+      .section {
+        padding: 60px 24px;
+      }
+
+      .calc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .order-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="rain-bg" id="rain"></div>
+
+  <nav>
+    <div class="logo">
+      Porous<span>ITS</span>.id
+      <small>Platform Anti-Banjir Surabaya</small>
+    </div>
+    <div class="nav-links">
+      <a href="#produk">Produk</a>
+      <a href="#kalkulator">Kalkulator</a>
+      <a href="#peta">Peta Genangan</a>
+      <a href="#order">Order</a>
+      <a href="#order" class="nav-cta">Pesan Sekarang →</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Berbasis Riset ITS Surabaya
+    </div>
+    <h1>Solusi <em>Anti-Banjir</em><br>Berbasis Paving<br>Porous Fly Ash</h1>
+    <p class="hero-sub">
+      Marketplace &amp; monitoring platform untuk paving block porous inovatif — mengurangi genangan di kawasan ITS,
+      Sukolilo, dan seluruh Surabaya.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollToSection('produk')">🧱 Lihat Katalog Produk</button>
+      <button class="btn-outline" onclick="scrollToSection('kalkulator')">📐 Estimasi Biaya Gratis</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">40<span>–50cm</span></div>
+        <div class="stat-label">Tinggi Genangan ITS<br>13 Maret 2026</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">85<span>%</span></div>
+        <div class="stat-label">Reduksi Genangan<br>dengan Porous Paving</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3<span>x</span></div>
+        <div class="stat-label">Lebih Tahan Lama<br>dari Paving Biasa</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="fitur">
+    <div class="section-tag">Platform Lengkap</div>
+    <h2 class="section-title">Semua yang Kamu Butuhkan dalam Satu Website</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧱</div>
+        <h3>Katalog Produk &amp; Harga</h3>
+        <p>Berbagai varian paving block porous fly ash dengan spesifikasi teknis lengkap dan harga transparan.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📐</div>
+        <h3>Kalkulator Estimasi Biaya</h3>
+        <p>Input luas area, pilih tipe paving, dan dapatkan estimasi biaya pemasangan secara instan.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>Peta Titik Rawan Genangan</h3>
+        <p>Peta interaktif area genangan di Surabaya, mulai dari kawasan ITS Sukolilo.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Order &amp; Tracking Proyek</h3>
+        <p>Form pemesanan mudah dengan sistem tracking real-time progress pemasangan proyek.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌧️</div>
+        <h3>Monitoring Hujan Real-Time</h3>
+        <p>Dashboard cuaca &amp; intensitas hujan Surabaya terhubung dengan data titik rawan banjir.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Blog Edukasi</h3>
+        <p>Konten edukasi tentang drainase, permeabilitas tanah, dan solusi banjir berbasis riset ITS.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="kalkulator">
+    <div class="calculator-section">
+      <div class="calc-grid">
+        <div>
+          <div class="section-tag">Kalkulator</div>
+          <h2 class="section-title" style="margin-bottom:32px">Estimasi Biaya Pemasangan</h2>
+          <div class="calc-form">
+            <div class="form-group">
+              <label>Luas Area (m²)</label>
+              <input type="number" id="calcArea" placeholder="Contoh: 50" value="50" oninput="calcEstimate()">
+            </div>
+            <div class="form-group">
+              <label>Tipe Paving</label>
+              <select id="calcType" onchange="calcEstimate()">
+                <option value="standard">Standard Porous (Rp 85.000/m²)</option>
+                <option value="premium">Premium Fly Ash (Rp 120.000/m²)</option>
+                <option value="heavy">Heavy Duty (Rp 155.000/m²)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Termasuk Jasa Pasang?</label>
+              <select id="calcInstall" onchange="calcEstimate()">
+                <option value="yes">Ya (+ Rp 45.000/m²)</option>
+                <option value="no">Tidak (Material saja)</option>
+              </select>
+            </div>
+            <button class="btn-primary" onclick="scrollToSection('order')" style="margin-top:8px">
+              📩 Request Penawaran Resmi
+            </button>
+          </div>
+        </div>
+        <div class="calc-result">
+          <div class="calc-result-label">Estimasi Total Biaya</div>
+          <div class="calc-result-amount" id="calcTotal">Rp 6.500.000</div>
+          <div class="calc-result-sub" id="calcNote">50 m² · Standard + Jasa Pasang</div>
+          <div class="calc-breakdown">
+            <div class="breakdown-row"><span>Material Paving</span><strong id="calcMaterial">Rp 4.250.000</strong></div>
+            <div class="breakdown-row"><span>Jasa Pemasangan</span><strong id="calcLabor">Rp 2.250.000</strong></div>
+            <div class="breakdown-row"><span>Estimasi Waktu</span><strong id="calcTime">2–3 hari</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="peta">
+    <div class="section-tag">Monitoring</div>
+    <h2 class="section-title">Peta Titik Rawan Genangan Surabaya</h2>
+    <div class="map-preview">
+      <div class="map-bg"></div>
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15" viewBox="0 0 800 320">
+        <path d="M0,160 Q100,80 200,140 Q300,200 400,120 Q500,50 600,130 Q700,200 800,110" fill="none"
+          stroke="rgba(58,200,219,0.6)" stroke-width="1.5" />
+        <path d="M0,200 Q200,120 400,180 Q600,230 800,160" fill="none" stroke="rgba(58,200,219,0.3)" stroke-width="1" />
+        <rect x="200" y="80" width="200" height="120" rx="4" fill="none" stroke="rgba(58,200,219,0.2)"
+          stroke-width="1" />
+      </svg>
+      <div class="map-pins">
+        <div class="map-pin pin-red" style="left:32%;top:40%">
+          <div class="pin-dot"></div>
+          <div class="pin-label">🔴 Gerbang ITS</div>
+        </div>
+        <div class="map-pin pin-red" style="left:48%;top:55%">
+          <div class="pin-dot"></div>
+          <div class="pin-label">🔴 Jl. Arif Rahman Hakim</div>
+        </div>
+        <div class="map-pin" style="left:62%;top:35%">
+          <div class="pin-dot" style="background:var(--accent);animation-name:none;"></div>
+          <div class="pin-label">🟡 Keputih</div>
+        </div>
+        <div class="map-pin" style="left:25%;top:65%">
+          <div class="pin-dot" style="background:var(--accent);animation-name:none;"></div>
+          <div class="pin-label">🟡 Gebang Lor</div>
+        </div>
+      </div>
+      <div class="map-overlay">
+        <p>🔴 Rawan Tinggi &nbsp;|&nbsp; 🟡 Rawan Sedang</p>
+        <p style="margin-top:6px;font-size:0.72rem;opacity:0.6">Data: Kejadian 13 Maret 2026 &amp; laporan warga</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="produk">
+    <div class="section-tag">Katalog Produk</div>
+    <h2 class="section-title">Pilihan Paving Block Porous</h2>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-thumb product-thumb-1">🧱</div>
+        <div class="product-info">
+          <div class="product-badge">Terlaris</div>
+          <h3>Porous Standard 6cm</h3>
+          <p>Ideal untuk trotoar &amp; area parkir residensial. Permeabilitas tinggi, teruji di laboratorium ITS.</p>
+          <div class="product-price">Rp 85.000 <span>/ m²</span></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb product-thumb-2">⬡</div>
+        <div class="product-info">
+          <div class="product-badge">Rekomendasi</div>
+          <h3>Premium Fly Ash 8cm</h3>
+          <p>Berbahan fly ash PLTU, eco-friendly, daya serap 3x lebih tinggi dari paving konvensional.</p>
+          <div class="product-price">Rp 120.000 <span>/ m²</span></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb product-thumb-3">🏗️</div>
+        <div class="product-info">
+          <div class="product-badge">Heavy Duty</div>
+          <h3>Industrial Porous 10cm</h3>
+          <p>Untuk jalan kampus, area industri, dan beban kendaraan berat. Kekuatan maksimal.</p>
+          <div class="product-price">Rp 155.000 <span>/ m²</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="order">
+    <div class="calculator-section">
+      <div class="section-tag">Order Sekarang</div>
+      <h2 class="section-title" style="margin-bottom:32px">Request Penawaran &amp; Konsultasi</h2>
+      <div class="order-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" id="orderName" placeholder="Nama kamu">
+        </div>
+        <div class="form-group">
+          <label>No. WhatsApp</label>
+          <input type="text" id="orderWA" placeholder="+62 8xx xxxx xxxx">
+        </div>
+        <div class="form-group">
+          <label>Lokasi Pemasangan</label>
+          <input type="text" id="orderLokasi" placeholder="Alamat lengkap">
+        </div>
+        <div class="form-group">
+          <label>Tipe Paving</label>
+          <select id="orderTipe">
+            <option>Standard Porous 6cm – Rp 85.000/m²</option>
+            <option>Premium Fly Ash 8cm – Rp 120.000/m²</option>
+            <option>Industrial Porous 10cm – Rp 155.000/m²</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Keterangan Tambahan</label>
+          <input type="text" id="orderNote" placeholder="Luas area, kebutuhan khusus, dll...">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="submitOrder()"
+        style="margin-top:24px;width:100%;justify-content:center;font-size:1rem;padding:16px">
+        🚀 Kirim Request – Gratis Konsultasi
+      </button>
+      <p style="text-align:center;font-size:0.78rem;color:var(--text);margin-top:12px">Tim kami akan menghubungi dalam
+        1×24 jam · Survey lokasi gratis</p>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-bg"></div>
+    <h2>Mulai Wujudkan<br><span style="color:var(--cyan)">Surabaya Bebas Banjir</span></h2>
+    <p>Bersama PorousITS.id — inovasi dari kampus untuk kota</p>
+    <button class="btn-primary" onclick="scrollToSection('order')" style="font-size:1rem;padding:16px 40px">
+      💧 Hubungi Kami Sekarang
+    </button>
+  </section>
+
+  <footer>
+    <div class="logo">
+      Porous<span>ITS</span>.id
+      <small>© 2026 · Inovasi ITS Surabaya</small>
+    </div>
+    <div class="footer-links">
+      <a href="#">Tentang Kami</a>
+      <a href="#">Blog</a>
+      <a href="#">Syarat &amp; Ketentuan</a>
+      <a href="#">Kontak</a>
+    </div>
+  </footer>
+
+  <script>
+    // Rain animation
+    const rain = document.getElementById('rain');
+    for (let i = 0; i < 60; i++) {
+      const d = document.createElement('div');
+      d.className = 'rain-drop';
+      d.style.cssText = `left:${Math.random() * 100}%;height:${Math.random() * 80 + 40}px;animation-duration:${Math.random() * 2 + 1.5}s;animation-delay:${Math.random() * 3}s;opacity:${Math.random() * 0.3 + 0.1};`;
+      rain.appendChild(d);
+    }
+
+    // Calculator
+    const prices = { standard: 85000, premium: 120000, heavy: 155000 };
+    function calcEstimate() {
+      const area = parseFloat(document.getElementById('calcArea').value) || 0;
+      const type = document.getElementById('calcType').value;
+      const install = document.getElementById('calcInstall').value;
+      const material = area * prices[type];
+      const labor = install === 'yes' ? area * 45000 : 0;
+      const total = material + labor;
+      const days = area < 20 ? '1–2' : area < 100 ? '2–3' : '3–7';
+      const typeNames = { standard: 'Standard', premium: 'Premium Fly Ash', heavy: 'Heavy Duty' };
+      document.getElementById('calcTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
+      document.getElementById('calcMaterial').textContent = 'Rp ' + material.toLocaleString('id-ID');
+      document.getElementById('calcLabor').textContent = install === 'yes' ? 'Rp ' + labor.toLocaleString('id-ID') : 'Tidak termasuk';
+      document.getElementById('calcTime').textContent = days + ' hari';
+      document.getElementById('calcNote').textContent = `${area} m² · ${typeNames[type]}${install === 'yes' ? ' + Jasa Pasang' : ''}`;
+    }
+    calcEstimate();
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('orderName').value.trim();
+      const wa = document.getElementById('orderWA').value.trim();
+      if (!name || !wa) {
+        alert('⚠️ Mohon isi Nama dan No. WhatsApp terlebih dahulu.');
+        return;
+      }
+      alert(`✅ Request berhasil dikirim!\n\nHalo ${name}, tim PorousITS.id akan menghubungi kamu via WhatsApp (${wa}) dalam 1×24 jam.\n\nTerima kasih sudah berkontribusi untuk Surabaya bebas banjir! 💧`);
+    }
+  </script>
+</body>
+
+</html>
